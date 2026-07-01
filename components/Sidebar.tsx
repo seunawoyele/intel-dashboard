@@ -9,6 +9,7 @@ const NAV = [
   { href: '/', label: 'Brief', icon: '◉' },
   { href: '/theses', label: 'Theses', icon: '◈' },
   { href: '/topics', label: 'Topics', icon: '▦' },
+  { href: '/kols', label: 'KOL Intel', icon: '◭' },
   { href: '/entities', label: 'Entities', icon: '◌' },
   { href: '/sources', label: 'Sources', icon: '◎' },
   { href: '/search', label: 'Search', icon: '⊘' },

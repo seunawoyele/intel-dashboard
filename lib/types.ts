@@ -106,3 +106,75 @@ export interface Source {
   avg_engagement: number
   total_posts: number
 }
+
+export interface KolThesis {
+  id: number
+  statement: string
+  direction: 'bull' | 'bear' | 'neutral'
+  conviction: number
+  horizon: string
+}
+
+export interface KolCoMention {
+  name: string
+  co_occurrence: number
+}
+
+export interface KolTrending {
+  handle: string
+  name: string
+  kol_followers_max: number
+  appearances_24h: number
+  appearances_7d: number
+  first_seen: string
+  last_seen: string
+  sparkline: number[]
+  entity_id: number | null
+  entity_type: string | null
+  intel_post_count: number | null
+  topics: string[]
+  theses: KolThesis[]
+  co_mentions: KolCoMention[]
+}
+
+export interface KolWatchlist {
+  name: string
+  mentions_24h: number
+  mentions_7d: number
+  best_rank: number
+  avg_rank: number
+  last_seen: string
+  sparkline: number[]
+  entity_id: number | null
+  entity_type: string | null
+  intel_post_count: number | null
+  topics: string[]
+  theses: KolThesis[]
+  co_mentions: KolCoMention[]
+}
+
+export interface KolConnected {
+  name: string
+  handle: string | null
+  kol_signal: string
+  entity_id: number
+  entity_type: string
+  topics: string[]
+  theses: KolThesis[]
+  co_mentions: KolCoMention[]
+}
+
+export interface KolsData {
+  updated: string
+  stats: {
+    trending_tracked: number
+    watchlist_tracked: number
+    trending_posts_24h: number
+    watchlist_posts_24h: number
+    connected_signals: number
+    untracked_names: number
+  }
+  trending: KolTrending[]
+  watchlist: KolWatchlist[]
+  connected: KolConnected[]
+}
