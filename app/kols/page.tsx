@@ -13,8 +13,10 @@ import type {
   KolWatchlist,
   KolConnected,
   KolThesis,
+  PostContent,
 } from '@/lib/types'
 import { TOPIC_COLORS } from '@/lib/colors'
+import PostDrawer from '@/components/PostDrawer'
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -158,7 +160,7 @@ function ConnectedCard({ item }: { item: KolConnected }) {
 
 // ── KOL card (trending) ───────────────────────────────────────────────────────
 
-function KolCard({ item }: { item: KolTrending }) {
+function KolCard({ item, onViewPosts }: { item: KolTrending; onViewPosts?: (posts: PostContent[]) => void }) {
   const [open, setOpen] = useState(false)
   const isNew = !item.entity_id
   const v7 = item.appearances_7d || 0
@@ -183,6 +185,17 @@ function KolCard({ item }: { item: KolTrending }) {
         <div className="text-right ml-2 flex-none">
           <div className="text-base font-mono font-semibold text-accent">{item.kol_followers_max}</div>
           <div className="text-2xs text-muted font-mono">KOLs</div>
+          {item.profile_url && (
+            <a
+              href={item.profile_url}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="text-2xs font-mono text-cyan/60 hover:text-cyan transition-colors"
+            >
+              ↗ X
+            </a>
+          )}
         </div>
       </div>
 
@@ -240,6 +253,14 @@ function KolCard({ item }: { item: KolTrending }) {
                 ))}
               </div>
             </div>
+          )}
+          {item.signal_posts && item.signal_posts.length > 0 && onViewPosts && (
+            <button
+              onClick={(e) => { e.stopPropagation(); onViewPosts(item.signal_posts) }}
+              className="text-2xs font-mono text-accent border border-accent/20 bg-accent/5 hover:bg-accent/10 px-3 py-1.5 rounded transition-colors w-full mt-1"
+            >
+              View {item.signal_posts.length} source post{item.signal_posts.length !== 1 ? 's' : ''} →
+            </button>
           )}
         </div>
       )}
@@ -363,6 +384,7 @@ export default function KolsPage() {
   const [data, setData] = useState<KolsData | null>(null)
   const [lastFetch, setLastFetch] = useState<Date | null>(null)
   const [section, setSection] = useState<'trending' | 'watchlist'>('trending')
+  const [drawer, setDrawer] = useState<{ name: string; posts: PostContent[] } | null>(null)
 
   const load = useCallback(() => {
     fetch(`/data/kols.json?t=${Date.now()}`)
@@ -454,7 +476,11 @@ export default function KolsPage() {
       {section === 'trending' && (
         <div className="grid grid-cols-2 lg:grid-cols-3 gap-3">
           {data.trending.slice(0, 60).map((item) => (
-            <KolCard key={item.handle} item={item} />
+            <KolCard
+              key={item.handle}
+              item={item}
+              onViewPosts={(posts) => setDrawer({ name: item.name, posts })}
+            />
           ))}
           {data.trending.length === 0 && (
             <div className="col-span-3 text-muted text-sm py-12 text-center border border-border rounded-lg bg-surface">
@@ -466,6 +492,15 @@ export default function KolsPage() {
 
       {/* Watchlist table */}
       {section === 'watchlist' && <WatchlistTable items={data.watchlist} />}
+
+      {drawer && (
+        <PostDrawer
+          title={drawer.name}
+          subtitle="Source posts from KOL intelligence feed"
+          posts={drawer.posts}
+          onClose={() => setDrawer(null)}
+        />
+      )}
     </div>
   )
 }

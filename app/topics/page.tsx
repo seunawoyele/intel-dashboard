@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useCallback } from 'react'
 import {
   ResponsiveContainer,
   BarChart,
@@ -11,8 +11,9 @@ import {
   AreaChart,
   Area,
 } from 'recharts'
-import type { TopicData, TopicsData } from '@/lib/types'
+import type { TopicData, TopicsData, PostContent, TopicPostsData } from '@/lib/types'
 import { TOPIC_COLORS, CHANNEL_DISPLAY } from '@/lib/colors'
+import PostDrawer from '@/components/PostDrawer'
 
 function VelocityBadge({ v }: { v: number }) {
   if (v >= 2) return <span className="text-2xs font-mono text-accent bg-accent/10 px-1.5 rounded">{v.toFixed(1)}× HOT</span>
@@ -21,7 +22,7 @@ function VelocityBadge({ v }: { v: number }) {
   return <span className="text-2xs font-mono text-muted px-1.5 rounded">{v.toFixed(1)}×</span>
 }
 
-function TopicCard({ topic, expanded, onToggle }: { topic: TopicData; expanded: boolean; onToggle: () => void }) {
+function TopicCard({ topic, expanded, onToggle, onViewPosts }: { topic: TopicData; expanded: boolean; onToggle: () => void; onViewPosts?: () => void }) {
   const color = TOPIC_COLORS[topic.topic] || '#64748b'
   const pct = Math.min(100, (topic.recent / Math.max(topic.baseline, 1)) * 100)
 
@@ -42,11 +43,19 @@ function TopicCard({ topic, expanded, onToggle }: { topic: TopicData; expanded: 
             <span className="text-2xs text-muted font-mono">{topic.total.toLocaleString()} total</span>
           </div>
         </div>
-        <div className="text-right">
+        <div className="text-right flex flex-col items-end gap-1">
           <div className="text-lg font-mono font-semibold" style={{ color }}>
             {topic.recent.toLocaleString()}
           </div>
           <div className="text-2xs text-muted font-mono">last 7d</div>
+          {onViewPosts && (
+            <button
+              onClick={(e) => { e.stopPropagation(); onViewPosts() }}
+              className="text-2xs font-mono text-muted hover:text-accent border border-border hover:border-accent/30 px-2 py-0.5 rounded transition-colors mt-0.5"
+            >
+              posts →
+            </button>
+          )}
         </div>
       </div>
 
@@ -131,6 +140,9 @@ export default function TopicsPage() {
   const [data, setData] = useState<TopicsData | null>(null)
   const [expanded, setExpanded] = useState<string | null>(null)
   const [sort, setSort] = useState<'velocity' | 'volume'>('velocity')
+  const [drawerTopic, setDrawerTopic] = useState<string | null>(null)
+  const [topicPostsCache, setTopicPostsCache] = useState<TopicPostsData | null>(null)
+  const [drawerLoading, setDrawerLoading] = useState(false)
 
   useEffect(() => {
     fetch('/data/topics.json')
@@ -138,6 +150,18 @@ export default function TopicsPage() {
       .then(setData)
       .catch(() => {})
   }, [])
+
+  const openPostsDrawer = useCallback(async (topic: string) => {
+    setDrawerTopic(topic)
+    if (!topicPostsCache) {
+      setDrawerLoading(true)
+      try {
+        const d: TopicPostsData = await fetch('/data/topic_posts.json').then((r) => r.json())
+        setTopicPostsCache(d)
+      } catch {}
+      setDrawerLoading(false)
+    }
+  }, [topicPostsCache])
 
   if (!data) {
     return (
@@ -184,6 +208,7 @@ export default function TopicsPage() {
             topic={topic}
             expanded={expanded === topic.topic}
             onToggle={() => setExpanded((e) => (e === topic.topic ? null : topic.topic))}
+            onViewPosts={() => openPostsDrawer(topic.topic)}
           />
         ))}
         {sorted.length === 0 && (
@@ -192,6 +217,16 @@ export default function TopicsPage() {
           </div>
         )}
       </div>
+
+      {drawerTopic && (
+        <PostDrawer
+          title={drawerTopic}
+          subtitle="Most recent source posts for this topic"
+          posts={topicPostsCache?.[drawerTopic] ?? []}
+          loading={drawerLoading}
+          onClose={() => setDrawerTopic(null)}
+        />
+      )}
     </div>
   )
 }

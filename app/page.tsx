@@ -1,7 +1,8 @@
 import { getBriefData } from '@/lib/data'
 import { TOPIC_COLORS, CHANNEL_DISPLAY } from '@/lib/colors'
-import { formatDistanceToNow, format } from 'date-fns'
+import { formatDistanceToNow } from 'date-fns'
 import type { Signal } from '@/lib/types'
+import RecentPostsFeed from '@/components/RecentPostsFeed'
 
 export const revalidate = 7200
 
@@ -158,40 +159,7 @@ export default function BriefPage() {
             </div>
           )}
 
-          {/* Recent activity feed */}
-          <div className="bg-surface border border-border rounded-lg">
-            <div className="px-3 py-2 border-b border-border">
-              <span className="text-xs font-mono text-muted uppercase tracking-wider">Recent Posts</span>
-            </div>
-            <div className="divide-y divide-border max-h-96 overflow-y-auto">
-              {latestPosts.map((post) => (
-                <div key={post.id} className="px-3 py-2.5">
-                  <div className="flex items-center gap-1.5 mb-1">
-                    <span className="text-2xs font-mono text-muted">
-                      {CHANNEL_DISPLAY[post.channel] || post.channel}
-                    </span>
-                    <span className="text-2xs text-border">·</span>
-                    <span className="text-2xs font-mono text-muted">
-                      {post.datetime
-                        ? formatDistanceToNow(new Date(post.datetime), { addSuffix: true })
-                        : ''}
-                    </span>
-                  </div>
-                  <p className="text-xs text-text/80 leading-snug line-clamp-2">{post.text}</p>
-                  {post.topics && post.topics.length > 0 && (
-                    <div className="flex gap-1 mt-1 flex-wrap">
-                      {post.topics.slice(0, 3).map((t) => (
-                        <TopicPill key={t} topic={t} />
-                      ))}
-                    </div>
-                  )}
-                </div>
-              ))}
-              {latestPosts.length === 0 && (
-                <div className="px-3 py-4 text-xs text-muted text-center">No posts yet</div>
-              )}
-            </div>
-          </div>
+          <RecentPostsFeed posts={latestPosts} />
         </div>
       </div>
     </div>

@@ -18,6 +18,28 @@ export interface Signal {
   delta?: number
 }
 
+export interface PostTweet {
+  handle: string
+  text: string
+  url: string
+  likes: number
+  rts: number
+  replies: number
+  status: string
+}
+
+export interface PostContent {
+  id: number
+  channel: string
+  datetime: string
+  url: string
+  text: string
+  topics: string[]
+  tweet: PostTweet | null
+}
+
+export type TopicPostsData = Record<string, PostContent[]>
+
 export interface BriefData {
   generated_at: string
   signals: Signal[]
@@ -35,13 +57,7 @@ export interface BriefData {
     conviction: number
     direction: string
   } | null
-  recent_posts: {
-    id: number
-    channel: string
-    datetime: string
-    text: string
-    topics: string[]
-  }[]
+  recent_posts: PostContent[]
 }
 
 export interface ThesisSnapshot {
@@ -135,6 +151,8 @@ export interface KolTrending {
   topics: string[]
   theses: KolThesis[]
   co_mentions: KolCoMention[]
+  profile_url: string | null
+  signal_posts: PostContent[]
 }
 
 export interface KolWatchlist {
