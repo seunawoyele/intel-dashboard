@@ -112,7 +112,7 @@ function ConnectedCard({ item }: { item: KolConnected }) {
           <div className="text-2xs text-muted font-mono mt-1">{item.kol_signal}</div>
         </div>
         <div className="flex gap-1 flex-wrap">
-          {item.theses.map((t) => (
+          {(item.theses ?? []).map((t) => (
             <DirectionBadge key={t.id} direction={t.direction} conviction={t.conviction} />
           ))}
         </div>
@@ -120,7 +120,7 @@ function ConnectedCard({ item }: { item: KolConnected }) {
 
       {item.topics.length > 0 && (
         <div className="flex gap-1 flex-wrap mt-2">
-          {item.topics.slice(0, 4).map((t) => <TopicDot key={t} topic={t} />)}
+          {(item.topics ?? []).slice(0, 4).map((t) => <TopicDot key={t} topic={t} />)}
         </div>
       )}
 
@@ -192,7 +192,7 @@ function KolCard({ item }: { item: KolTrending }) {
 
       <div className="flex items-center justify-between">
         <div className="flex gap-1 flex-wrap">
-          {item.topics.slice(0, 3).map((t) => <TopicDot key={t} topic={t} />)}
+          {(item.topics ?? []).slice(0, 3).map((t) => <TopicDot key={t} topic={t} />)}
         </div>
         <div className="flex items-center gap-1.5 text-2xs font-mono text-muted">
           {item.intel_post_count != null && item.intel_post_count > 0 && (
@@ -218,10 +218,10 @@ function KolCard({ item }: { item: KolTrending }) {
               </div>
             ))}
           </div>
-          {item.theses.length > 0 && (
+          {(item.theses ?? []).length > 0 && (
             <div>
               <div className="text-2xs font-mono text-muted uppercase tracking-wider mb-1.5">Thesis matches</div>
-              {item.theses.map((t) => (
+              {(item.theses ?? []).map((t) => (
                 <div key={t.id} className="text-xs text-text/80 leading-snug mb-1.5 pl-2 border-l-2"
                   style={{ borderColor: t.direction === 'bull' ? '#10b981' : '#ef4444' }}>
                   {t.statement}
@@ -229,11 +229,11 @@ function KolCard({ item }: { item: KolTrending }) {
               ))}
             </div>
           )}
-          {item.co_mentions.length > 0 && (
+          {(item.co_mentions ?? []).length > 0 && (
             <div>
               <div className="text-2xs font-mono text-muted uppercase tracking-wider mb-1.5">Co-mentions</div>
               <div className="flex gap-1.5 flex-wrap">
-                {item.co_mentions.slice(0, 6).map((c) => (
+                {(item.co_mentions ?? []).slice(0, 6).map((c) => (
                   <span key={c.name} className="text-2xs font-mono border border-border rounded px-1.5 py-0.5 text-muted">
                     {c.name}
                   </span>
@@ -309,7 +309,7 @@ function WatchlistTable({ items }: { items: KolWatchlist[] }) {
                 <span className="text-right text-2xs font-mono text-text">{item.mentions_7d}</span>
                 <span className={`text-right text-2xs font-mono ${rankColor}`}>#{item.best_rank}</span>
                 <div className="flex gap-0.5 flex-wrap">
-                  {item.topics.slice(0, 2).map((t) => (
+                  {(item.topics ?? []).slice(0, 2).map((t) => (
                     <span
                       key={t}
                       className="text-2xs px-1 rounded"
@@ -333,14 +333,14 @@ function WatchlistTable({ items }: { items: KolWatchlist[] }) {
                       <span>Intel posts: <span className="text-text">{item.intel_post_count}</span></span>
                     )}
                   </div>
-                  {item.topics.length > 0 && (
+                  {(item.topics ?? []).length > 0 && (
                     <div className="flex gap-1 flex-wrap">
-                      {item.topics.map((t) => <TopicDot key={t} topic={t} />)}
+                      {(item.topics ?? []).map((t) => <TopicDot key={t} topic={t} />)}
                     </div>
                   )}
-                  {item.co_mentions.length > 0 && (
+                  {(item.co_mentions ?? []).length > 0 && (
                     <div className="flex gap-1.5 flex-wrap">
-                      {item.co_mentions.map((c) => (
+                      {(item.co_mentions ?? []).map((c) => (
                         <span key={c.name} className="font-mono border border-border rounded px-1.5 py-0.5">
                           {c.name} ×{c.co_occurrence}
                         </span>
@@ -389,9 +389,9 @@ export default function KolsPage() {
     )
   }
 
-  const updatedAgo = data.updated
-    ? `${Math.round((Date.now() - new Date(data.updated).getTime()) / 60000)}m ago`
-    : 'unknown'
+  const updatedAgo = data.updated && lastFetch
+    ? `${Math.round((lastFetch.getTime() - new Date(data.updated).getTime()) / 60000)}m ago`
+    : 'syncing...'
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
