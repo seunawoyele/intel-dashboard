@@ -40,6 +40,13 @@ export interface PostContent {
 
 export type TopicPostsData = Record<string, PostContent[]>
 
+export interface TimelineData {
+  updated: string
+  count: number
+  channels: string[]
+  posts: PostContent[]
+}
+
 export interface BriefData {
   generated_at: string
   signals: Signal[]

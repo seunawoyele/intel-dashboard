@@ -7,6 +7,7 @@ import { formatDistanceToNow } from 'date-fns'
 
 const NAV = [
   { href: '/', label: 'Brief', icon: '◉' },
+  { href: '/timeline', label: 'Timeline', icon: '☰' },
   { href: '/theses', label: 'Theses', icon: '◈' },
   { href: '/topics', label: 'Topics', icon: '▦' },
   { href: '/kols', label: 'KOL Intel', icon: '◭' },
