@@ -135,7 +135,7 @@ function WindowPanel({ data, onOpenPosts }: { data: SignalWindow; onOpenPosts: (
           <div className="text-2xs font-mono text-muted uppercase tracking-wider mb-1.5">
             Trending topics — click to read sources
           </div>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
             {data.trending_topics.map((t) => (
               <TrendingTopicRow
                 key={t.topic}
