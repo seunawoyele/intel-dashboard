@@ -3,6 +3,7 @@ import { TOPIC_COLORS, CHANNEL_DISPLAY } from '@/lib/colors'
 import { formatDistanceToNow } from 'date-fns'
 import type { Signal } from '@/lib/types'
 import RecentPostsFeed from '@/components/RecentPostsFeed'
+import SignalWindows from '@/components/SignalWindows'
 
 export const revalidate = 7200
 
@@ -77,6 +78,10 @@ export default function BriefPage() {
             </div>
           ))}
         </div>
+      </div>
+
+      <div className="mb-4">
+        <SignalWindows />
       </div>
 
       <div className="grid grid-cols-3 gap-4">

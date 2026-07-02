@@ -203,3 +203,39 @@ export interface KolsData {
   watchlist: KolWatchlist[]
   connected: KolConnected[]
 }
+
+export interface WindowTrendingTopic {
+  topic: string
+  count: number
+  velocity: number
+}
+
+export interface WindowConvergence {
+  topic: string
+  channels: number
+  channel_list: string[]
+  posts: number
+}
+
+export interface WindowThesisMover {
+  id: number
+  statement: string
+  direction: 'bull' | 'bear' | 'neutral'
+  conviction: number
+  delta: number
+  crossed: 'up' | 'down' | null
+}
+
+export interface SignalWindow {
+  hours: number
+  new_posts: number
+  trending_topics: WindowTrendingTopic[]
+  convergence: WindowConvergence[]
+  thesis_movers: WindowThesisMover[]
+  thesis_history_available: boolean
+}
+
+export interface SignalWindowsData {
+  updated: string
+  windows: Record<'1h' | '2h' | '4h' | '6h' | '12h', SignalWindow>
+}
