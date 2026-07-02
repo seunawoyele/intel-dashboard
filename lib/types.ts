@@ -189,6 +189,34 @@ export interface KolConnected {
   co_mentions: KolCoMention[]
 }
 
+export interface KolWindowTrending {
+  handle: string
+  name: string
+  count: number
+  kol_followers_max: number
+  first_seen: string
+  is_new: boolean
+  entity_type: string | null
+  topics: string[]
+}
+
+export interface KolWindowWatchlist {
+  name: string
+  count: number
+  best_rank: number
+  avg_rank: number
+  is_new: boolean
+  entity_type: string | null
+  topics: string[]
+}
+
+export interface KolWindow {
+  trending: KolWindowTrending[]
+  watchlist: KolWindowWatchlist[]
+}
+
+export type KolWindowKey = '1h' | '6h' | '12h' | 'today' | '3d' | 'week' | '14d' | 'month'
+
 export interface KolsData {
   updated: string
   stats: {
@@ -202,6 +230,7 @@ export interface KolsData {
   trending: KolTrending[]
   watchlist: KolWatchlist[]
   connected: KolConnected[]
+  windows: Record<KolWindowKey, KolWindow>
 }
 
 export interface SignalEntity {

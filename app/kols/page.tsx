@@ -17,6 +17,7 @@ import type {
 } from '@/lib/types'
 import { TOPIC_COLORS } from '@/lib/colors'
 import PostDrawer from '@/components/PostDrawer'
+import KolWindows from '@/components/KolWindows'
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -435,6 +436,9 @@ export default function KolsPage() {
 
       {/* Stat bar */}
       <StatBar stats={data.stats} updatedAgo={updatedAgo} />
+
+      {/* Time-windowed advancing/trending view */}
+      <KolWindows data={data} />
 
       {/* Connected signals — hero */}
       {data.connected.length > 0 && (
