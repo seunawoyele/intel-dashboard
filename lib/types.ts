@@ -204,10 +204,18 @@ export interface KolsData {
   connected: KolConnected[]
 }
 
+export interface SignalEntity {
+  name: string
+  type: string | null
+}
+
 export interface WindowTrendingTopic {
   topic: string
   count: number
   velocity: number
+  context: string
+  entities: SignalEntity[]
+  sample_posts: PostContent[]
 }
 
 export interface WindowConvergence {
@@ -215,6 +223,18 @@ export interface WindowConvergence {
   channels: number
   channel_list: string[]
   posts: number
+  context: string
+  entities: SignalEntity[]
+  sample_posts: PostContent[]
+}
+
+export interface ThesisTopEvidence {
+  post_id: number
+  channel: string
+  datetime: string
+  url: string
+  snippet: string
+  similarity: number | null
 }
 
 export interface WindowThesisMover {
@@ -224,6 +244,7 @@ export interface WindowThesisMover {
   conviction: number
   delta: number
   crossed: 'up' | 'down' | null
+  top_evidence: ThesisTopEvidence | null
 }
 
 export interface SignalWindow {
