@@ -19,6 +19,7 @@ export const CHANNEL_COLORS: Record<string, string> = {
   cookiesreads: '#4ade80',
   leakmealpha: '#fb923c',
   c4dotgg: '#f472b6',
+  muur_posts: '#22d3ee',
 }
 
 export const CHANNEL_DISPLAY: Record<string, string> = {
@@ -27,4 +28,5 @@ export const CHANNEL_DISPLAY: Record<string, string> = {
   cookiesreads: 'Cookies',
   leakmealpha: 'LeakMe',
   c4dotgg: 'c4',
+  muur_posts: 'Muur',
 }
