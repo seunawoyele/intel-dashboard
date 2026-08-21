@@ -145,7 +145,7 @@ export default function TopicsPage() {
   const [drawerLoading, setDrawerLoading] = useState(false)
 
   useEffect(() => {
-    fetch('/data/topics.json')
+    fetch('https://raw.githubusercontent.com/seunawoyele/intel-dashboard-data/main/topics.json')
       .then((r) => r.json())
       .then(setData)
       .catch(() => {})
@@ -156,7 +156,7 @@ export default function TopicsPage() {
     if (!topicPostsCache) {
       setDrawerLoading(true)
       try {
-        const d: TopicPostsData = await fetch('/data/topic_posts.json').then((r) => r.json())
+        const d: TopicPostsData = await fetch('https://raw.githubusercontent.com/seunawoyele/intel-dashboard-data/main/topic_posts.json').then((r) => r.json())
         setTopicPostsCache(d)
       } catch {}
       setDrawerLoading(false)

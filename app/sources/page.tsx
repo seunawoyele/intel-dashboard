@@ -1,7 +1,7 @@
 import { getSourcesData } from '@/lib/data'
 import type { Source } from '@/lib/types'
 
-export const revalidate = 7200
+export const revalidate = 300
 
 function AuthorityBar({ score, max }: { score: number; max: number }) {
   const pct = Math.min(100, (score / max) * 100)
@@ -21,8 +21,8 @@ function formatAuth(n: number): string {
   return n.toFixed(0)
 }
 
-export default function SourcesPage() {
-  const sources = getSourcesData()
+export default async function SourcesPage() {
+  const sources = await getSourcesData()
   const top = sources.slice(0, 100)
   const maxAuth = top.reduce((m, s) => Math.max(m, s.authority_score), 1)
 

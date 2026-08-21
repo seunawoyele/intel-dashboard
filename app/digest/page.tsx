@@ -4,7 +4,7 @@ import { formatDistanceToNow } from 'date-fns'
 import type { Signal } from '@/lib/types'
 import RecentPostsFeed from '@/components/RecentPostsFeed'
 
-export const revalidate = 7200
+export const revalidate = 300
 
 function SignalBadge({ type }: { type: string }) {
   const map: Record<string, { label: string; cls: string }> = {
@@ -46,8 +46,8 @@ function TopicPill({ topic }: { topic: string }) {
   )
 }
 
-export default function DigestPage() {
-  const brief = getBriefData()
+export default async function DigestPage() {
+  const brief = await getBriefData()
   const { signals, stats, recent_posts, top_thesis } = brief
 
   const genAt = brief.generated_at

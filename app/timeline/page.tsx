@@ -14,7 +14,7 @@ export default function TimelinePage() {
   const [visible, setVisible] = useState(PAGE_SIZE)
 
   const load = useCallback(() => {
-    fetch(`/data/timeline.json?t=${Date.now()}`)
+    fetch(`https://raw.githubusercontent.com/seunawoyele/intel-dashboard-data/main/timeline.json?t=${Date.now()}`)
       .then((r) => r.json())
       .then((d) => {
         setData(d)

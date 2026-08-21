@@ -4,7 +4,7 @@ import { CHANNEL_DISPLAY } from '@/lib/colors'
 import { formatDistanceToNow } from 'date-fns'
 import type { Thesis } from '@/lib/types'
 
-export const revalidate = 7200
+export const revalidate = 300
 
 function DirectionBadge({ direction }: { direction: string }) {
   if (direction === 'bull') return <span className="text-xs font-mono px-2 py-0.5 rounded text-bull bg-bull/10">BULL</span>
@@ -40,8 +40,8 @@ function ConvictionMeter({ value }: { value: number }) {
   )
 }
 
-export default function ThesesPage() {
-  const theses = getThesesData()
+export default async function ThesesPage() {
+  const theses = await getThesesData()
   const sorted = [...theses].sort((a, b) => b.conviction - a.conviction)
 
   return (

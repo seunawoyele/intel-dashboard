@@ -3,10 +3,10 @@ import { formatDistanceToNow } from 'date-fns'
 import Link from 'next/link'
 import SignalWindows from '@/components/SignalWindows'
 
-export const revalidate = 7200
+export const revalidate = 300
 
-export default function BriefPage() {
-  const brief = getBriefData()
+export default async function BriefPage() {
+  const brief = await getBriefData()
   const { stats } = brief
 
   const genAt = brief.generated_at

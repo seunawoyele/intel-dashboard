@@ -46,7 +46,7 @@ export default function SearchPage() {
       setLoading(false)
       return
     }
-    fetch('/data/search-index.json')
+    fetch('https://raw.githubusercontent.com/seunawoyele/intel-dashboard-data/main/search-index.json')
       .then((r) => r.json())
       .then((posts: PostIndex[]) => {
         indexedPosts = posts

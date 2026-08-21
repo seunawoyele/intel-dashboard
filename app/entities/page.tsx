@@ -32,7 +32,7 @@ export default function EntitiesPage() {
   const [expanded, setExpanded] = useState<number | null>(null)
 
   useEffect(() => {
-    fetch('/data/entities.json')
+    fetch('https://raw.githubusercontent.com/seunawoyele/intel-dashboard-data/main/entities.json')
       .then((r) => r.json())
       .then(setEntities)
       .catch(() => {})

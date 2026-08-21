@@ -388,7 +388,7 @@ export default function KolsPage() {
   const [drawer, setDrawer] = useState<{ name: string; posts: PostContent[] } | null>(null)
 
   const load = useCallback(() => {
-    fetch(`/data/kols.json?t=${Date.now()}`)
+    fetch(`https://raw.githubusercontent.com/seunawoyele/intel-dashboard-data/main/kols.json?t=${Date.now()}`)
       .then((r) => r.json())
       .then((d) => {
         setData(d)
