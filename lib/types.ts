@@ -289,3 +289,15 @@ export interface SignalWindowsData {
   updated: string
   windows: Record<'1h' | '2h' | '4h' | '6h' | '12h', SignalWindow>
 }
+
+export interface TokenAlert {
+  id: number
+  entity_id: number
+  name: string
+  alerted_at: string
+  window_days: number
+  mention_count: number
+  new_mentions_since_last: number
+  sentiment: 'bullish' | 'bearish' | 'mixed' | 'unclear'
+  summary: string
+}
