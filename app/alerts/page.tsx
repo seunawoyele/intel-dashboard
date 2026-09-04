@@ -23,6 +23,21 @@ function SentimentBadge({ sentiment }: { sentiment: string }) {
   )
 }
 
+// alerted_at comes as either a bare "YYYY-MM-DD HH:MM:SS" (sqlite's live
+// default, no offset) or a full ISO string with an explicit UTC offset
+// (backfilled rows, from Python's isoformat()) — never append 'Z' to either,
+// that produces "...+00:00Z" which is an invalid date and throws. Guarded so
+// a bad timestamp degrades to plain text instead of crashing the page.
+function relativeTime(raw: string): string {
+  const d = new Date(raw)
+  if (isNaN(d.getTime())) return raw
+  try {
+    return formatDistanceToNow(d, { addSuffix: true })
+  } catch {
+    return raw
+  }
+}
+
 export default function AlertsPage() {
   const [alerts, setAlerts] = useState<TokenAlert[]>([])
   const [expanded, setExpanded] = useState<number | null>(null)
@@ -75,7 +90,7 @@ export default function AlertsPage() {
                   </span>
                 </div>
                 <span className="text-2xs text-muted font-mono">
-                  {formatDistanceToNow(new Date(a.alerted_at + 'Z'), { addSuffix: true })}
+                  {relativeTime(a.alerted_at)}
                 </span>
               </div>
               {isOpen && (
