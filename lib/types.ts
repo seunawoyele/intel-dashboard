@@ -290,6 +290,30 @@ export interface SignalWindowsData {
   windows: Record<'1h' | '2h' | '4h' | '6h' | '12h', SignalWindow>
 }
 
+export interface ChannelCall {
+  id: number
+  channel: string
+  ticker: string
+  post_id: number | null
+  call_datetime: string
+  entry_context: string | null
+  entry_price_usd: number | null
+  entry_price_source: string | null
+  resolved_chain_id: string | null
+  resolved_pair_address: string | null
+  resolution_status: 'pending' | 'resolved' | 'unresolved'
+  last_price_usd: number | null
+  last_graded_at: string | null
+  peak_price_usd: number | null
+  peak_at: string | null
+  best_up_tier_notified: string | null
+  worst_down_tier_notified: string | null
+  status: 'open' | 'rugged'
+  created_at: string
+  multiple: number | null
+  peak_multiple: number | null
+}
+
 export interface TokenAlert {
   id: number
   entity_id: number
