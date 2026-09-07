@@ -314,6 +314,22 @@ export interface ChannelCall {
   peak_multiple: number | null
 }
 
+export interface Airdrop {
+  id: number
+  project_name: string
+  chains: string | null
+  qualification_type: 'passive' | 'task_required' | 'unclear'
+  qualification_note: string | null
+  description: string | null
+  status: 'active' | 'ended' | 'unclear'
+  source_post_id: number | null
+  source_channel: string | null
+  source_url: string | null
+  first_seen_at: string
+  last_confirmed_at: string
+  created_at: string
+}
+
 export interface TokenAlert {
   id: number
   entity_id: number

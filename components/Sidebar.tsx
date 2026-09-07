@@ -12,6 +12,7 @@ const NAV = [
   { href: '/theses', label: 'Theses', icon: '◈' },
   { href: '/alerts', label: 'Token Alerts', icon: '⚠' },
   { href: '/calls', label: 'Channel Calls', icon: '◫' },
+  { href: '/airdrops', label: 'Airdrops', icon: '🪂' },
   { href: '/topics', label: 'Topics', icon: '▦' },
   { href: '/kols', label: 'KOL Intel', icon: '◭' },
   { href: '/entities', label: 'Entities', icon: '◌' },
